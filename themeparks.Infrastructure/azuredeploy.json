@@ -15,7 +15,8 @@
     }
   },
   "variables": {
-    "storageAccountName": "[toLower(concat(parameters('environmentName'), 'storage', uniqueString(resourceGroup().id)))]"
+    "storageAccountName": "[toLower(concat(parameters('environmentName'), 'storage', uniqueString(resourceGroup().id)))]",
+    "appInsightsName": "[toLower(concat(parameters('locationSuffix'), '-', parameters('environmentName'), '-insights-', uniqueString(resourceGroup().id)))]"
   },
   "resources": [
     {
@@ -46,6 +47,19 @@
         }
       },
       "dependsOn": []
+    },
+    {
+      "name": "[variables('appInsightsName')]",
+      "type": "microsoft.insights/components",
+      "kind": "web",
+      "apiVersion": "2014-04-01",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "[concat('hidden-link:', resourceId('Microsoft.BotService/botServices/', parameters('botId')))]": "Resource"
+      },
+      "properties": {
+        "ApplicationId": "[parameters('botId')]"
+      }
     }
   ]
 }

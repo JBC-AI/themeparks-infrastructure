@@ -1,26 +1,33 @@
-// TODO Tidy this
 {
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "name": {
+    "storageAccountType": {
       "type": "string"
     },
-    "location": {
-      "type": "string"
-    },
-    "accountType": {
-      "type": "string"
+    "environmentName": {
+      "type": "string",
+      "defaultValue": "dev",
+      "allowedValues": [
+        "dev",
+        "prod"
+      ]
     }
+  },
+  "variables": {
+    "storageAccountName": "[toLower(concat(parameters('environmentName'), 'storage', uniqueString(resourceGroup().id)))]"
   },
   "resources": [
     {
       "apiVersion": "2017-10-01",
-      "name": "[parameters('name')]",
-      "location": "[parameters('location')]",
+      "name": "[variables('storageAccountName')]",
+      "location": "[resourceGroup().location]",
       "type": "Microsoft.Storage/storageAccounts",
       "sku": {
-        "name": "[parameters('accountType')]"
+        "name": "[parameters('storageAccountType')]"
+      },
+      "tags": {
+        "environment": "[parameters('environmentName')]"
       },
       "kind": "StorageV2",
       "properties": {

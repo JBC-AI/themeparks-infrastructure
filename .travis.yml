@@ -7,7 +7,7 @@ before_install:
 
 install: true
 
-script: scripts/validate-rg.sh -u $servicePrincipalId -s $servicePrincipalSecret -t $tenant -g $resourceGroupName -l $resourceGroupLocation -d $templateFilePath -p $parametersFilePath aksAgentAdminUsername=$aksAgentAdminUsername aksAgentSshRSAPublicKey="$aksAgentSshRSAPublicKey" aksServicePrincipalClientId=$aksServicePrincipalClientId aksServicePrincipalClientSecret=$aksServicePrincipalClientSecret
+script: scripts/validate-rg.sh -u $servicePrincipalId -s $servicePrincipalSecret -t $tenant -g $resourceGroupName -l $resourceGroupLocation -d $templateFilePath -p $parametersFilePath aksAgentAdminUsername=$aksAgentAdminUsername aksAgentSshRSAPublicKey=$aksAgentSshRSAPublicKey aksServicePrincipalClientId=$aksServicePrincipalClientId aksServicePrincipalClientSecret=$aksServicePrincipalClientSecret
 
 deploy:
     - provider: script

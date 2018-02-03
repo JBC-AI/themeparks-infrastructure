@@ -19,6 +19,9 @@
     },
     "aksServicePrincipalClientSecret": {
       "value": ""
+    },
+    "rgLocationPrefix": {
+      "value": "ne"
     }
   }
 }

@@ -136,10 +136,19 @@
         "description": "The Service Principal Client Secret."
       },
       "type": "securestring"
+    },    
+    "rgLocationPrefix": {
+      "type": "string"
+    },
+    "storageAccountType": {
+      "type": "string",
+      "defaultValue": "Standard_LRS"
     }
   },
   "variables": {
     "name": "tpb",
+
+    "storageAccountName": "[substring(concat(parameters('rgLocationPrefix'), parameters('environmentName'), variables('name'), 'storage', uniqueString(resourceGroup().id)), 0, 24)]",
 
     "aksDnsPrefix": "[concat(variables('name'), '-aks')]",
     "aksName": "[concat(parameters('aksLocationPrefix'), '-', parameters('environmentName'), '-', variables('aksDnsPrefix'), '-', uniqueString(resourceGroup().id))]",
@@ -182,6 +191,35 @@
           "Secret": "[parameters('aksServicePrincipalClientSecret')]"
         }
       }
+    },    
+    {
+      "apiVersion": "2017-10-01",
+      "name": "[variables('storageAccountName')]",
+      "location": "[resourceGroup().location]",
+      "type": "Microsoft.Storage/storageAccounts",
+      "sku": {
+        "name": "[parameters('storageAccountType')]"
+      },
+      "tags": {
+        "environment": "[parameters('environmentName')]"
+      },
+      "kind": "StorageV2",
+      "properties": {
+        "supportsHttpsTrafficOnly": true,
+        "accessTier": "Hot",
+        "encryption": {
+          "services": {
+            "blob": {
+              "enabled": true
+            },
+            "file": {
+              "enabled": true
+            }
+          },
+          "keySource": "Microsoft.Storage"
+        }
+      },
+      "dependsOn": []
     }
   ]
 }

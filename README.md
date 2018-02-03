@@ -1,1 +1,1 @@
-# themeparks-infrastructure
+# themeparks-infrastructure [![Build Status](https://travis-ci.org/JonJam/themeparks-infrastructure.svg?branch=master)](https://travis-ci.org/JonJam/themeparks-infrastructure)

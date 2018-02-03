@@ -4,3 +4,7 @@ before_install:
     - sudo apt-get -qq update
     - sudo apt-get install apt-transport-https
     - sudo apt-get install azure-cli
+
+install: true
+
+script: ./scripts/validate-rg.sh -u $servicePrincipalId -s $servicePrincipalSecret -t $tenant -g $resourceGroupName -l $resourceGroupLocation -d $templateFilePath -p $parametersFilePath aksAgentAdminUsername=$aksAgentAdminUsername aksAgentSshRSAPublicKey=$aksAgentSshRSAPublicKey aksServicePrincipalClientId=$aksServicePrincipalClientId aksServicePrincipalClientSecret=$aksServicePrincipalClientSecret

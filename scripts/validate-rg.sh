@@ -118,8 +118,7 @@ echo "Validating deployment..."
 	set -x
 
     if [ $1 ]; then
-        # Additional parameters specified, pass to deployment.
-		echo $@
+        # Additional parameters specified, pass to deployment.		
         az group deployment validate --resource-group $resourceGroupName --template-file $templateFilePath --parameters @$parametersFilePath --parameters $@
     else        
         az group deployment validate --resource-group $resourceGroupName --template-file $templateFilePath --parameters @$parametersFilePath 

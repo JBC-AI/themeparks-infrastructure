@@ -19,12 +19,6 @@
     },
     "aksServicePrincipalClientSecret": {
       "value": ""
-    },
-    "rgLocationPrefix": {
-      "value": "ne"
-    },
-    "microsoftAppId": {
-      "value": ""
     }
   }
 }

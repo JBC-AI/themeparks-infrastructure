@@ -91,7 +91,7 @@ if [[ -z "$parametersFilePath" ]]; then
 fi
 
 # Ensuring files exist.
-if [ ! -f "$templateFilePath" ] || [ -z "$parametersFilePath" ]; then
+if [ ! -f "$templateFilePath" ] || [ ! -f "$parametersFilePath" ]; then
 	echo "Either $templateFilePath or $parametersFilePath cannot be found"
 	exit 1
 fi

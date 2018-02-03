@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "aksLocation": {
-      "value": "West Europe"
+      "value": "westeurope"
     },
     "aksLocationPrefix": {
       "value": "we"

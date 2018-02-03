@@ -157,11 +157,13 @@
     }
   },
   "variables": {
-    "storageAccountName": "[substring(concat(parameters('environmentName'), 'themeparkbotsstorage', uniqueString(resourceGroup().id)), 0, 24)]",
-    "appInsightsName": "[concat(parameters('rgLocationPrefix'), '-', parameters('environmentName'), '-themeparksbot-insights-', uniqueString(resourceGroup().id))]",
-    "botName": "[concat(parameters('rgLocationPrefix'), '-', parameters('environmentName'), '-themeparksbot-', uniqueString(resourceGroup().id))]",
+    "name": "tpb",
+
+    "storageAccountName": "[substring(concat(parameters('rgLocationPrefix'), parameters('environmentName'), variables('name'), 'storage', uniqueString(resourceGroup().id)), 0, 24)]",
+    "appInsightsName": "[concat(parameters('rgLocationPrefix'), '-', parameters('environmentName'), '-', variables('name'), '-insights-', uniqueString(resourceGroup().id))]",
+    "botName": "[concat(parameters('rgLocationPrefix'), '-', parameters('environmentName'), '-', variables('name'), '-', uniqueString(resourceGroup().id))]",
     
-    "aksDnsPrefix": "themeparksbot-aks",
+    "aksDnsPrefix": "[concat(variables('name'), '-aks')]",
     "aksName": "[concat(parameters('aksLocationPrefix'), '-', parameters('environmentName'), '-', variables('aksDnsPrefix'), '-', uniqueString(resourceGroup().id))]",
     "aksAgentOsDiskSizeGB": 0
   },

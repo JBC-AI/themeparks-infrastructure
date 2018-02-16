@@ -26,5 +26,5 @@ jobs:
         provider: script
         script: 
           #TODO Call install helm and process output of deploy-rg
-        - ./scripts/deploy-rg.sh -u $servicePrincipalId -s $servicePrincipalSecret -t $tenant -g $resourceGroupName -l $resourceGroupLocation -d $templateFilePath -p $parametersFilePath aksAgentAdminUsername=$aksAgentAdminUsername aksAgentSshRSAPublicKey="$aksAgentSshRSAPublicKey" aksServicePrincipalClientId=$aksServicePrincipalClientId aksServicePrincipalClientSecret=$aksServicePrincipalClientSecret
+        - ./scripts/deploy-rg.sh -u $servicePrincipalId -s $servicePrincipalSecret -t $tenant -g $resourceGroupName -l $resourceGroupLocation -d $templateFilePath -p $parametersFilePath -q properties.outputs.aksName.value aksAgentAdminUsername=$aksAgentAdminUsername aksAgentSshRSAPublicKey="$aksAgentSshRSAPublicKey" aksServicePrincipalClientId=$aksServicePrincipalClientId aksServicePrincipalClientSecret=$aksServicePrincipalClientSecret
         

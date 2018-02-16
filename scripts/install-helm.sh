@@ -73,15 +73,8 @@ fi
 # Follow the steps here to create a Service Principal: https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-create-service-principal-portal
 az login --service-principal -u $servicePrincipalId -p $servicePrincipalSecret --tenant $tenant
 
-clusters=$(az aks list --resource-group $resourceGroupName)
+echo "Getting credentials for cluster..."
+az aks get-credentials --name $clusterName --resource-group $resourceGroupName
 
-if [ ${#clusters[@]} -eq 0 ]; then
-	echo "A cluster with name " $clusterName " could not be found in resource group " $resourceGroupName "."
-	exit 1
-else
-	echo "Getting credentials for cluster..."
-	az aks get-credentials --name $clusterName --resource-group $resourceGroupName
-
-	echo "Setting up Helm..."
-	helm init --override storage=secret
-fi
+echo "Setting up Helm..."
+helm init --override storage=secret

@@ -112,6 +112,8 @@ else
 	echo "Using existing resource group..."
 fi
 
+# TODO Return value from below
+
 # Start deployment
 echo "Starting deployment..."
 (

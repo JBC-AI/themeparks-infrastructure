@@ -121,7 +121,7 @@ echo "Starting deployment..."
 
 if [ $1 ]; then
 	# Additional parameters specified, pass to deployment.
-	deploymentOutput=$(az group deployment create --resource-group $resourceGroupName --template-file $templateFilePath --parameters @$parametersFilePath --parameters $@ --query $query)
+	deploymentOutput=$(az group deployment create --resource-group $resourceGroupName --template-file $templateFilePath --parameters @$parametersFilePath --query $query --parameters $@)
 else        
 	deploymentOutput=$(az group deployment create --resource-group $resourceGroupName --template-file $templateFilePath --parameters @$parametersFilePath --query $query)
 fi

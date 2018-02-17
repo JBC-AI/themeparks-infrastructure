@@ -20,13 +20,14 @@ jobs:
   include:
     - stage: test
       install: skip
-      script: ./scripts/validate-rg.sh -u $servicePrincipalId -s $servicePrincipalSecret -t $tenant -g $resourceGroupName -l $resourceGroupLocation -d $templateFilePath -p $parametersFilePath -q "properties.outputs.aksName.value" aksAgentAdminUsername=$aksAgentAdminUsername aksAgentSshRSAPublicKey="$aksAgentSshRSAPublicKey" aksServicePrincipalClientId=$aksServicePrincipalClientId aksServicePrincipalClientSecret=$aksServicePrincipalClientSecret
+      script: ./scripts/validate-rg.sh -u $servicePrincipalId -s $servicePrincipalSecret -t $tenant -g $resourceGroupName -l $resourceGroupLocation -d $templateFilePath -q "properties.outputs.aksName.value" -p $parametersFilePath aksAgentAdminUsername=$aksAgentAdminUsername aksAgentSshRSAPublicKey="$aksAgentSshRSAPublicKey" aksServicePrincipalClientId=$aksServicePrincipalClientId aksServicePrincipalClientSecret=$aksServicePrincipalClientSecret
     - stage: deploy
       install: skip
       script: skip
       deploy:
         provider: script
         script: 
-        - aksName=$(./scripts/deploy-rg.sh -u $servicePrincipalId -s $servicePrincipalSecret -t $tenant -g $resourceGroupName -l $resourceGroupLocation -d $templateFilePath -p $parametersFilePath -q "properties.outputs.aksName.value" aksAgentAdminUsername=$aksAgentAdminUsername aksAgentSshRSAPublicKey="$aksAgentSshRSAPublicKey" aksServicePrincipalClientId=$aksServicePrincipalClientId aksServicePrincipalClientSecret=$aksServicePrincipalClientSecret)
+          # TODO Fix this
+        - aksName=$(./scripts/deploy-rg.sh -u $servicePrincipalId -s $servicePrincipalSecret -t $tenant -g $resourceGroupName -l $resourceGroupLocation -d $templateFilePath -q "properties.outputs.aksName.value" -p $parametersFilePath  aksAgentAdminUsername=$aksAgentAdminUsername aksAgentSshRSAPublicKey="$aksAgentSshRSAPublicKey" aksServicePrincipalClientId=$aksServicePrincipalClientId aksServicePrincipalClientSecret=$aksServicePrincipalClientSecret)
         - echo $aksName
         # TODO call helm script

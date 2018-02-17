@@ -9,7 +9,7 @@ set -euo pipefail
 # IFS new value is less likely to cause confusing bugs when looping arrays or arguments (e.g. $@)
 IFS=$'\n\t'
 
-usage() { echo "Usage: $0 -u <servicePrincipalId> -s <servicePrincipalSecret> -t <tenant> -g <resourceGroupName> -l <resourceGroupLocation> -d <templateFilePath> -p <parametersFilePath>" 1>&2; exit 1; }
+usage() { echo "Usage: $0 -u <servicePrincipalId> -s <servicePrincipalSecret> -t <tenant> -g <resourceGroupName> -l <resourceGroupLocation> -d <templateFilePath> -p <parametersFilePath> -q <query>" 1>&2; exit 1; }
 
 declare servicePrincipalId=""
 declare servicePrincipalSecret=""
@@ -18,9 +18,10 @@ declare resourceGroupName=""
 declare resourceGroupLocation=""
 declare templateFilePath=""
 declare parametersFilePath=""
+declare query=properties.outputs
 
 # Initialize parameters specified from command line
-while getopts ":u:s:t:g:l:d:p:" arg; do
+while getopts ":u:s:t:g:l:d:p:q:" arg; do
 	case "${arg}" in		
 		u)
 			servicePrincipalId=${OPTARG}
@@ -42,6 +43,9 @@ while getopts ":u:s:t:g:l:d:p:" arg; do
 			;;
         p)
 			parametersFilePath=${OPTARG}
+			;;
+		q)
+			query=${OPTARG}
 			;;
 		esac
 done
@@ -114,18 +118,16 @@ fi
 
 # Start deployment
 echo "Starting deployment..."
-(
-	set -x
 
-    if [ $1 ]; then
-        # Additional parameters specified, pass to deployment.
-        az group deployment create --resource-group $resourceGroupName --template-file $templateFilePath --parameters @$parametersFilePath --parameters $@
-    else        
-        az group deployment create --resource-group $resourceGroupName --template-file $templateFilePath --parameters @$parametersFilePath 
-    fi	
-)
+if [ $1 ]; then
+	# Additional parameters specified, pass to deployment.
+	deploymentOutput=$(az group deployment create --resource-group $resourceGroupName --template-file $templateFilePath --parameters @$parametersFilePath --query $query --parameters $@)
+else        
+	deploymentOutput=$(az group deployment create --resource-group $resourceGroupName --template-file $templateFilePath --parameters @$parametersFilePath --query $query)
+fi
 
-if [ $?  == 0 ];
- then
+if [ $?  == 0 ]; then
 	echo "Template has been successfully deployed"
+
+	echo $deploymentOutput
 fi

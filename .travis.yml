@@ -4,6 +4,10 @@ before_install:
   - sudo apt-get -qq update
   - sudo apt-get install -qq apt-transport-https
   - sudo apt-get install -qq azure-cli
+  - sudo az aks install-cli
+  - curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get > get_helm.sh
+  - chmod 700 get_helm.sh
+  - sudo ./get_helm.sh
 
 stages:
   - test
@@ -20,4 +24,6 @@ jobs:
       script: skip
       deploy:
         provider: script
-        script: ./scripts/deploy-rg.sh -u $servicePrincipalId -s $servicePrincipalSecret -t $tenant -g $resourceGroupName -l $resourceGroupLocation -d $templateFilePath -p $parametersFilePath aksAgentAdminUsername=$aksAgentAdminUsername aksAgentSshRSAPublicKey="$aksAgentSshRSAPublicKey" aksServicePrincipalClientId=$aksServicePrincipalClientId aksServicePrincipalClientSecret=$aksServicePrincipalClientSecret
+        script: 
+        - aksName=$(./scripts/deploy-rg.sh -u $servicePrincipalId -s $servicePrincipalSecret -t $tenant -g $resourceGroupName -l $resourceGroupLocation -d $templateFilePath -p $parametersFilePath -q properties.outputs.aksName.value aksAgentAdminUsername=$aksAgentAdminUsername aksAgentSshRSAPublicKey="$aksAgentSshRSAPublicKey" aksServicePrincipalClientId=$aksServicePrincipalClientId aksServicePrincipalClientSecret=$aksServicePrincipalClientSecret)
+        - echo $aksName

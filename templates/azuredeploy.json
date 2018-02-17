@@ -136,7 +136,7 @@
         "description": "The Service Principal Client Secret."
       },
       "type": "securestring"
-    },    
+    },
     "rgLocationPrefix": {
       "type": "string"
     },
@@ -147,9 +147,7 @@
   },
   "variables": {
     "name": "tpb",
-
     "storageAccountName": "[substring(concat(parameters('rgLocationPrefix'), parameters('environmentName'), variables('name'), 'storage', uniqueString(resourceGroup().id)), 0, 24)]",
-
     "aksDnsPrefix": "[concat(variables('name'), '-aks')]",
     "aksName": "[concat(parameters('aksLocationPrefix'), '-', parameters('environmentName'), '-', variables('aksDnsPrefix'), '-', uniqueString(resourceGroup().id))]",
     "aksAgentOsDiskSizeGB": 0
@@ -191,7 +189,7 @@
           "Secret": "[parameters('aksServicePrincipalClientSecret')]"
         }
       }
-    },    
+    },
     {
       "apiVersion": "2017-10-01",
       "name": "[variables('storageAccountName')]",
@@ -221,5 +219,11 @@
       },
       "dependsOn": []
     }
-  ]
+  ],
+  "outputs": {
+    "aksName": {
+      "type": "string",
+      "value": "[variables('aksName')]"
+    }
+  }
 }

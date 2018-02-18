@@ -11,6 +11,4 @@ IFS=$'\n\t'
 
 aksName=$(./scripts/deploy-rg.sh -u $servicePrincipalId -s $servicePrincipalSecret -t $tenant -g $resourceGroupName -l $resourceGroupLocation -d $templateFilePath -p $parametersFilePath -q properties.outputs.aksName.value aksAgentAdminUsername=$aksAgentAdminUsername aksAgentSshRSAPublicKey="$aksAgentSshRSAPublicKey" aksServicePrincipalClientId=$aksServicePrincipalClientId aksServicePrincipalClientSecret=$aksServicePrincipalClientSecret)
 
-echo $aksName
-
 ./scripts/install-helm.sh -u $servicePrincipalId -s $servicePrincipalSecret -t $tenant -g $resourceGroupName -c $aksName

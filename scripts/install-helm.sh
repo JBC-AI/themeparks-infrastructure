@@ -71,7 +71,7 @@ if [[ -z "$clusterName" ]]; then
 fi
 
 # Follow the steps here to create a Service Principal: https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-create-service-principal-portal
-az login --service-principal -u $servicePrincipalId -p $servicePrincipalSecret --tenant $tenant
+az login --service-principal -u $servicePrincipalId -p $servicePrincipalSecret --tenant $tenant 1> /dev/null
 
 echo "Getting credentials for cluster..."
 az aks get-credentials --name $clusterName --resource-group $resourceGroupName

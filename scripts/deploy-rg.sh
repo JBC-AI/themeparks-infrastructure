@@ -112,9 +112,9 @@ fi
 
 if [ $1 ]; then
 	# Additional parameters specified, pass to deployment.
-	deploymentOutput=$(az group deployment create --resource-group $resourceGroupName --template-file $templateFilePath --parameters @$parametersFilePath --query $query --parameters $@)
+	deploymentOutput=$(az group deployment create --resource-group $resourceGroupName --template-file $templateFilePath --parameters @$parametersFilePath --query $query -o tsv --parameters $@)
 else        
-	deploymentOutput=$(az group deployment create --resource-group $resourceGroupName --template-file $templateFilePath --parameters @$parametersFilePath --query $query)
+	deploymentOutput=$(az group deployment create --resource-group $resourceGroupName --template-file $templateFilePath --parameters @$parametersFilePath --query $query -o tsv)
 fi
 
 if [ $?  == 0 ]; then

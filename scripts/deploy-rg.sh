@@ -101,23 +101,14 @@ if [ ! -f "$templateFilePath" ] || [ ! -f "$parametersFilePath" ]; then
 fi
 
 # Follow the steps here to create a Service Principal: https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-create-service-principal-portal
-az login --service-principal -u $servicePrincipalId -p $servicePrincipalSecret --tenant $tenant
+az login --service-principal -u $servicePrincipalId -p $servicePrincipalSecret --tenant $tenant 1> /dev/null
 
 # Check for existing RG
 exists=$(az group exists --name $resourceGroupName)
 
 if [ $exists = false ]; then
-	echo "Resource group with name" $resourceGroupName "could not be found. Creating new resource group.."
-	(
-		set -x
-		az group create --name $resourceGroupName --location $resourceGroupLocation 1> /dev/null
-	)
-else
-	echo "Using existing resource group..."
+	az group create --name $resourceGroupName --location $resourceGroupLocation 1> /dev/null
 fi
-
-# Start deployment
-echo "Starting deployment..."
 
 if [ $1 ]; then
 	# Additional parameters specified, pass to deployment.
@@ -127,7 +118,5 @@ else
 fi
 
 if [ $?  == 0 ]; then
-	echo "Template has been successfully deployed"
-
 	echo $deploymentOutput
 fi

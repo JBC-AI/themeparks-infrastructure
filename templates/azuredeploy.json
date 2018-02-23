@@ -143,14 +143,27 @@
     "storageAccountType": {
       "type": "string",
       "defaultValue": "Standard_LRS"
+    },    
+    "botSku": {
+      "type": "string",
+      "defaultValue": "F0"
+    },
+    "microsoftAppId": {
+      "type": "string"
     }
   },
   "variables": {
     "name": "tpb",
+    
     "storageAccountName": "[substring(concat(parameters('rgLocationPrefix'), parameters('environmentName'), variables('name'), 'storage', uniqueString(resourceGroup().id)), 0, 24)]",
+    
     "aksDnsPrefix": "[concat(variables('name'), '-aks')]",
     "aksName": "[concat(parameters('aksLocationPrefix'), '-', parameters('environmentName'), '-', variables('aksDnsPrefix'), '-', uniqueString(resourceGroup().id))]",
-    "aksAgentOsDiskSizeGB": 0
+    "aksAgentOsDiskSizeGB": 0,
+
+    "appInsightsName": "[concat(parameters('rgLocationPrefix'), '-', parameters('environmentName'), '-', variables('name'), '-insights-', uniqueString(resourceGroup().id))]",
+
+    "botName": "[concat(parameters('rgLocationPrefix'), '-', parameters('environmentName'), '-', variables('name'), '-bot-', uniqueString(resourceGroup().id))]"
   },
   "resources": [
     {
@@ -218,6 +231,39 @@
         }
       },
       "dependsOn": []
+    },
+    {
+      "name": "[variables('appInsightsName')]",
+      "type": "microsoft.insights/components",
+      "kind": "web",
+      "apiVersion": "2014-04-01",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "[concat('hidden-link:', resourceId('Microsoft.BotService/botServices/', variables('botName')))]": "Resource"
+      },
+      "properties": {
+        "ApplicationId": "[variables('botName')]"
+      }
+    },
+    {
+      "apiVersion": "2017-12-01",
+      "type": "Microsoft.BotService/botServices",
+      "name": "[variables('botName')]",
+      "location": "global",
+      "kind": "bot",
+      "sku": {
+        "name": "[parameters('botSku')]"
+      },
+      "properties": {
+        "name": "[variables('botName')]",
+        "displayName": "[variables('botName')]",
+        "msaAppId": "[parameters('microsoftAppId')]",
+        "developerAppInsightsApplicationId": "[variables('appInsightsName')]",
+        "developerAppInsightKey": "[reference(resourceId('microsoft.insights/components/', variables('appInsightsName')), '2015-05-01').InstrumentationKey]"
+      },
+      "dependsOn": [
+        "[resourceId('microsoft.insights/components/', variables('appInsightsName'))]"
+      ]
     }
   ],
   "outputs": {

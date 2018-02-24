@@ -25,6 +25,12 @@
     },
     "microsoftAppId":{
       "value": ""
+    },
+    "luisLocation":{
+      "value": "westeurope"
+    },    
+    "luisLocationPrefix": {
+      "value": "we"
     }
   }
 }

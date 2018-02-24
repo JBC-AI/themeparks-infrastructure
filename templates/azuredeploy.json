@@ -151,6 +151,18 @@
     "microsoftAppId": {
       "type": "string"
     },
+    "luisLocation": {
+      "type": "string",
+      "metadata": {
+        "description": "The location of LUIS."
+      }
+    },
+    "luisLocationPrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "Prefix for the location of LUIS."
+      }
+    },
     "luisSku": {
       "type": "string",
       "defaultValue": "F0"
@@ -164,7 +176,7 @@
     "aksAgentOsDiskSizeGB": 0,
     "appInsightsName": "[concat(parameters('rgLocationPrefix'), '-', parameters('environmentName'), '-', variables('name'), '-insights-', uniqueString(resourceGroup().id))]",
     "botName": "[concat(parameters('rgLocationPrefix'), '-', parameters('environmentName'), '-', variables('name'), '-bot-', uniqueString(resourceGroup().id))]",
-    "luisName": "[concat(parameters('rgLocationPrefix'), '-', parameters('environmentName'), '-', variables('name'), '-luis-', uniqueString(resourceGroup().id))]"
+    "luisName": "[concat(parameters('luisLocationPrefix'), '-', parameters('environmentName'), '-', variables('name'), '-luis-', uniqueString(resourceGroup().id))]"
   },
   "resources": [
     {
@@ -269,7 +281,7 @@
     {
       "apiVersion": "2016-02-01-preview",
       "name": "[variables('luisName')]",
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('luisLocation')]",
       "type": "Microsoft.CognitiveServices/accounts",
       "kind": "LUIS",
       "sku": {

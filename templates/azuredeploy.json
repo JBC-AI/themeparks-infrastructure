@@ -143,27 +143,28 @@
     "storageAccountType": {
       "type": "string",
       "defaultValue": "Standard_LRS"
-    },    
+    },
     "botSku": {
       "type": "string",
       "defaultValue": "F0"
     },
     "microsoftAppId": {
       "type": "string"
+    },
+    "luisSku": {
+      "type": "string",
+      "defaultValue": "F0"
     }
   },
   "variables": {
     "name": "tpb",
-    
     "storageAccountName": "[substring(concat(parameters('rgLocationPrefix'), parameters('environmentName'), variables('name'), 'storage', uniqueString(resourceGroup().id)), 0, 24)]",
-    
     "aksDnsPrefix": "[concat(variables('name'), '-aks')]",
     "aksName": "[concat(parameters('aksLocationPrefix'), '-', parameters('environmentName'), '-', variables('aksDnsPrefix'), '-', uniqueString(resourceGroup().id))]",
     "aksAgentOsDiskSizeGB": 0,
-
     "appInsightsName": "[concat(parameters('rgLocationPrefix'), '-', parameters('environmentName'), '-', variables('name'), '-insights-', uniqueString(resourceGroup().id))]",
-
-    "botName": "[concat(parameters('rgLocationPrefix'), '-', parameters('environmentName'), '-', variables('name'), '-bot-', uniqueString(resourceGroup().id))]"
+    "botName": "[concat(parameters('rgLocationPrefix'), '-', parameters('environmentName'), '-', variables('name'), '-bot-', uniqueString(resourceGroup().id))]",
+    "luisName": "[concat(parameters('rgLocationPrefix'), '-', parameters('environmentName'), '-', variables('name'), '-luis-', uniqueString(resourceGroup().id))]"
   },
   "resources": [
     {
@@ -264,6 +265,17 @@
       "dependsOn": [
         "[resourceId('microsoft.insights/components/', variables('appInsightsName'))]"
       ]
+    },
+    {
+      "apiVersion": "2016-02-01-preview",
+      "name": "[variables('luisName')]",
+      "location": "[resourceGroup().location]",
+      "type": "Microsoft.CognitiveServices/accounts",
+      "kind": "LUIS",
+      "sku": {
+        "name": "[parameters('luisSku')]"
+      },
+      "properties": {}
     }
   ],
   "outputs": {
